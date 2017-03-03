@@ -19,18 +19,16 @@ export class AlbumComponent implements OnInit {
     private _router: ActivatedRoute,
     private _auth: Auth
   ) { }
-  ngOnInit() {
-    if (this._auth.authenticated()) {
-      this._router.params
-        .map(params => params['id'])
-        .subscribe((id) => {
-          this._spotifyService.getAlbum(id)
-            .subscribe(album => {
-              this.album = album;
-            });
-        });
-    }
 
+  ngOnInit() {
+    this._router.params
+      .map(params => params['id'])
+      .subscribe((id) => {
+        this._spotifyService.getAlbum(id)
+          .subscribe(album => {
+            this.album = album;
+          });
+      });
   }
 
 }

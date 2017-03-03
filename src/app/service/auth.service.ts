@@ -10,10 +10,19 @@ export class Auth {
   // Configure Auth0
   lock = new Auth0Lock(myConfig.clientID, myConfig.domain, {});
 
-  constructor( private _router: Router) {
+  constructor(private _router: Router) {
     // Add callback for lock `authenticated` event
-    this.lock.on('authenticated', (authResult) => {
-      localStorage.setItem('id_token', authResult.idToken);
+    // Add callback for lock `authenticated` event
+    this.lock.on("authenticated", (authResult: any) => {
+      this.lock.getProfile(authResult.idToken, function (error: any, profile: any) {
+        if (error) {
+          throw new Error(error);
+        }
+        // Set Profile
+        localStorage.setItem('profile', JSON.stringify(profile));
+        // Set Token
+        localStorage.setItem('id_token', authResult.idToken);
+      })
     });
   }
 
@@ -23,6 +32,7 @@ export class Auth {
   };
 
   public authenticated() {
+    console.log("autorizate -START!!!");
     // Check if there's an unexpired JWT
     // It searches for an item in localStorage with key == 'id_token'
     return tokenNotExpired();
@@ -31,6 +41,7 @@ export class Auth {
   public logout() {
     // Remove token from localStorage
     localStorage.removeItem('id_token');
-    this._router.navigate(['**']);
+    localStorage.removeItem('profile');
+    this._router.navigate(['/']);
   };
 }

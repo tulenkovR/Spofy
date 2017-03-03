@@ -10,13 +10,16 @@ import { SearchComponent } from './search/search.component';
 import { Auth } from './service/auth.service';
 import { AlbumComponent } from './album/album.component';
 import { ArtistComponent } from './artist/artist.component';
+import { ProfileComponent } from './profile/profile.component';
+import { AuthGuard } from './service/auth.guard';
 
 @NgModule({
   declarations: [
     AppComponent,
     SearchComponent,
     AlbumComponent,
-    ArtistComponent
+    ArtistComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +27,7 @@ import { ArtistComponent } from './artist/artist.component';
     HttpModule,
     routing
   ],
-  providers: [Auth, SpotifyService],
+  providers: [Auth, SpotifyService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
